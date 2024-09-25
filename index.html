@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
     <title>Главный экран</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -27,16 +27,17 @@
         <button class="token-info-btn">О токене</button>
     </div>
 
-    <!-- Секция с балансом и доходом -->
+    <!-- Баланс и доход -->
     <div class="balance-section">
         <div class="balance-container">
             <div class="token-balance">
                 <img src="coin-icon.png" alt="Токены" class="icon">
-                <span id="tokenBalance">7 269 517</span>
+                <span id="tokenBalance">10000</span>
             </div>
             <div class="income-info">
-                <span id="hourlyIncome">599.51k доход / час</span>
+                <span id="hourlyIncome">0 доход / час</span>
                 <span id="tapIncome">1 доход / тап</span>
+                <span id="energy">1000 энергии</span>
             </div>
         </div>
     </div>
@@ -44,25 +45,25 @@
     <!-- Анимация человечка и мяча -->
     <div class="main-character">
         <img id="character" src="character.png" alt="Человечек" class="character">
-        <img id="ball" src="ball.png" alt="Мяч" class="ball">
+        <img id="ball" src="ball.png" alt="Мяч" class="ball" style="position: absolute; left: 65%; top: -40px;">
     </div>
 
     <!-- Энергия и задания -->
     <div class="energy-section">
-        <span>1000 / 1000</span>
+        <span id="energyStatus">1000 / 1000 энергии</span>
         <button class="task-btn">Задания</button>
     </div>
 
     <!-- Всплывающее окно с прибылью -->
-    <div id="profit-popup" class="profit-popup">
+    <div id="profit-popup" class="profit-popup" style="display: none;">
         <div class="popup-header">
             <img src="profit-coins.png" alt="Монеты" class="popup-icon">
-            <h2>Ты заработал <span id="profitAmount">228.31k</span>!</h2>
+            <h2>Ты заработал <span id="profitAmount"></span>!</h2>
             <p>Заходи каждые 3 часа, чтобы получить прибыль!</p>
         </div>
         <div class="profit-display">
             <img src="coin-icon.png" alt="Токены" class="icon-large">
-            <span id="profitValue">228.31k</span>
+            <span id="profitValue"></span>
         </div>
         <button class="collect-btn" onclick="collectProfit()">Получить</button>
     </div>
@@ -70,52 +71,27 @@
     <!-- Нижнее меню -->
     <div class="bottom-menu">
         <button class="menu-btn">Главная</button>
-        <button class="menu-btn">Заработок</button>
-        <button class="menu-btn">Друзья</button>
-        <button class="menu-btn">Колесо кондиций</button>
-    </div>
-      <!-- Верхняя панель с балансом -->
-      <div class="top-bar">
-        <button class="back-btn">Назад</button>
-        <h1>Заработок</h1>
-        <div class="balance-section">
-            <span>Баланс:</span>
-            <span id="balance">10000</span> <!-- Добавлено для отображения баланса -->
-        </div>
-    </div>
-
-    <!-- Секция с карточками зданий (можно добавить к существующей структуре) -->
-    <div class="earnings-container" id="earningsContainer">
-        <!-- Карточки зданий будут динамически генерироваться через JS -->
-    </div>
-   <!-- Секция заработка, скрытая по умолчанию -->
-<div id="earningsTab" class="earnings-tab" style="display: none;">
-    <!-- Верхняя панель с балансом и доходом -->
-    <div class="top-bar">
-        <button class="back-btn" onclick="goBackToMain()">Назад</button>
-        <h1>Заработок</h1>
-        <div class="balance-section">
-            <span>Баланс:</span>
-            <span id="balance">10000</span> <!-- Отображение баланса -->
-        </div>
-    </div>
-
-    <!-- Секция с карточками зданий -->
-    <div class="earnings-container" id="earningsContainer">
-        <!-- Карточки зданий генерируются через JS -->
-    </div>
-</div>
-
-
-
-    <!-- Нижнее меню (оставляем, если оно уже у вас есть) -->
-    <div class="bottom-menu">
-        <button class="menu-btn">Главная</button>
-        <button class="menu-btn active">Заработок</button>
+        <button class="menu-btn" id="openEarnings">Заработок</button>
         <button class="menu-btn">Друзья</button>
         <button class="menu-btn">Колесо кондиций</button>
     </div>
 
+    <!-- Вкладка заработка -->
+    <div id="earningsTab" class="earnings-tab" style="display: none;">
+        <div class="top-bar">
+            <button class="back-btn" onclick="goBackToMain()">Назад</button>
+            <h1>Заработок</h1>
+            <div class="balance-section">
+                <span>Баланс:</span>
+                <span id="balance">10000</span> <!-- Отображение баланса -->
+            </div>
+        </div>
+
+        <!-- Карточки зданий -->
+        <div class="earnings-container" id="earningsContainer">
+            <!-- Карточки зданий будут сгенерированы через JS -->
+        </div>
+    </div>
 
     <script src="app.js"></script>
 </body>
