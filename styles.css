@@ -1,0 +1,338 @@
+/* Общие стили */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #0a0f29;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Загрузочный экран */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #0a0f29;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.loading-content {
+    text-align: center;
+}
+
+.loading-logo {
+    width: 100px;
+    height: auto;
+}
+
+/* Верхняя панель */
+.top-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    align-items: center;
+}
+
+.account-info {
+    display: flex;
+    align-items: center;
+}
+
+.account-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.username {
+    font-size: 18px;
+}
+
+.logo-section .logo {
+    width: 100px;
+    height: auto;
+}
+
+.token-info-btn {
+    background-color: #1f2331;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+/* Баланс и доход */
+.balance-section {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.token-balance {
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.income-info {
+    font-size: 16px;
+    color: #a0a0a0;
+}
+
+.icon {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+.icon-large {
+    width: 40px;
+    height: 40px;
+}
+
+/* Анимация персонажа и мяча */
+.main-character {
+    position: relative;
+    margin-top: 20px;
+}
+
+.character {
+    width: 150px;
+    cursor: pointer;
+}
+
+.ball {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    width: 40px;
+    transform: translateX(-50%);
+}
+
+/* Энергия и задания */
+.energy-section {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.task-btn {
+    background-color: #1a75ff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+/* Всплывающее окно с прибылью */
+.profit-popup {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #1a1f36;
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 100;
+}
+
+.collect-btn {
+    background-color: #1a75ff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+/* Нижнее меню */
+.bottom-menu {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    background-color: #1a1f36;
+    padding: 10px;
+}
+
+.menu-btn {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Оптимизация для мобильных устройств */
+@media only screen and (max-width: 768px) {
+    .character {
+        width: 120px;
+    }
+
+    .ball {
+        width: 30px;
+    }
+
+    .loading-logo {
+        width: 80px;
+    }
+
+    .popup-header h2 {
+        font-size: 18px;
+    }
+
+    .icon-large {
+        width: 30px;
+    }
+}
+/* Добавляем новые стили для заработка */
+.earnings-container {
+    flex-grow: 1;
+    overflow-y: scroll;
+    padding: 10px;
+}
+
+.card {
+    background-color: #1a1f36;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card .info {
+    display: flex;
+    flex-direction: column;
+}
+
+.card h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.card .level {
+    font-size: 14px;
+    color: #a0a0a0;
+}
+
+.card .income {
+    margin-top: 5px;
+    font-size: 16px;
+    color: #ffd700;
+}
+
+.card button {
+    background-color: #1a75ff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* Мобильная оптимизация */
+@media only screen and (max-width: 768px) {
+    .card h3 {
+        font-size: 16px;
+    }
+
+    .card .income {
+        font-size: 14px;
+    }
+
+    .card button {
+        padding: 8px 16px;
+    }
+}
+/* Вкладка заработка */
+.earnings-tab {
+    width: 100%;
+    height: 100vh;
+    background-color: #0a0f29;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Общие стили для секции заработка */
+.earnings-container {
+    flex-grow: 1;
+    overflow-y: scroll;
+    padding: 10px;
+}
+
+.card {
+    background-color: #1a1f36;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card .info {
+    display: flex;
+    flex-direction: column;
+}
+
+.card h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.card .level {
+    font-size: 14px;
+    color: #a0a0a0;
+}
+
+.card .income {
+    margin-top: 5px;
+    font-size: 16px;
+    color: #ffd700;
+}
+
+.card button {
+    background-color: #1a75ff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* Мобильная оптимизация */
+@media only screen and (max-width: 768px) {
+    .card h3 {
+        font-size: 16px;
+    }
+
+    .card .income {
+        font-size: 14px;
+    }
+
+    .card button {
+        padding: 8px 16px;
+    }
+}

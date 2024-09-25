@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главный экран</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Загрузочный экран -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <img src="logo.png" alt="Логотип" class="loading-logo">
+            <p>Загрузка...</p>
+        </div>
+    </div>
+
+    <!-- Верхняя панель с иконкой аккаунта и логотипом -->
+    <div class="top-bar">
+        <div class="account-info">
+            <img src="account-icon.png" alt="Иконка аккаунта" class="account-icon">
+            <span class="username">имя пользователя</span>
+        </div>
+        <div class="logo-section">
+            <img src="logo.png" alt="Логотип" class="logo">
+        </div>
+        <button class="token-info-btn">О токене</button>
+    </div>
+
+    <!-- Секция с балансом и доходом -->
+    <div class="balance-section">
+        <div class="balance-container">
+            <div class="token-balance">
+                <img src="coin-icon.png" alt="Токены" class="icon">
+                <span id="tokenBalance">7 269 517</span>
+            </div>
+            <div class="income-info">
+                <span id="hourlyIncome">599.51k доход / час</span>
+                <span id="tapIncome">1 доход / тап</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Анимация человечка и мяча -->
+    <div class="main-character">
+        <img id="character" src="character.png" alt="Человечек" class="character">
+        <img id="ball" src="ball.png" alt="Мяч" class="ball">
+    </div>
+
+    <!-- Энергия и задания -->
+    <div class="energy-section">
+        <span>1000 / 1000</span>
+        <button class="task-btn">Задания</button>
+    </div>
+
+    <!-- Всплывающее окно с прибылью -->
+    <div id="profit-popup" class="profit-popup">
+        <div class="popup-header">
+            <img src="profit-coins.png" alt="Монеты" class="popup-icon">
+            <h2>Ты заработал <span id="profitAmount">228.31k</span>!</h2>
+            <p>Заходи каждые 3 часа, чтобы получить прибыль!</p>
+        </div>
+        <div class="profit-display">
+            <img src="coin-icon.png" alt="Токены" class="icon-large">
+            <span id="profitValue">228.31k</span>
+        </div>
+        <button class="collect-btn" onclick="collectProfit()">Получить</button>
+    </div>
+
+    <!-- Нижнее меню -->
+    <div class="bottom-menu">
+        <button class="menu-btn">Главная</button>
+        <button class="menu-btn">Заработок</button>
+        <button class="menu-btn">Друзья</button>
+        <button class="menu-btn">Колесо кондиций</button>
+    </div>
+      <!-- Верхняя панель с балансом -->
+      <div class="top-bar">
+        <button class="back-btn">Назад</button>
+        <h1>Заработок</h1>
+        <div class="balance-section">
+            <span>Баланс:</span>
+            <span id="balance">10000</span> <!-- Добавлено для отображения баланса -->
+        </div>
+    </div>
+
+    <!-- Секция с карточками зданий (можно добавить к существующей структуре) -->
+    <div class="earnings-container" id="earningsContainer">
+        <!-- Карточки зданий будут динамически генерироваться через JS -->
+    </div>
+   <!-- Секция заработка, скрытая по умолчанию -->
+<div id="earningsTab" class="earnings-tab" style="display: none;">
+    <!-- Верхняя панель с балансом и доходом -->
+    <div class="top-bar">
+        <button class="back-btn" onclick="goBackToMain()">Назад</button>
+        <h1>Заработок</h1>
+        <div class="balance-section">
+            <span>Баланс:</span>
+            <span id="balance">10000</span> <!-- Отображение баланса -->
+        </div>
+    </div>
+
+    <!-- Секция с карточками зданий -->
+    <div class="earnings-container" id="earningsContainer">
+        <!-- Карточки зданий генерируются через JS -->
+    </div>
+</div>
+
+
+
+    <!-- Нижнее меню (оставляем, если оно уже у вас есть) -->
+    <div class="bottom-menu">
+        <button class="menu-btn">Главная</button>
+        <button class="menu-btn active">Заработок</button>
+        <button class="menu-btn">Друзья</button>
+        <button class="menu-btn">Колесо кондиций</button>
+    </div>
+
+
+    <script src="app.js"></script>
+</body>
+</html>
