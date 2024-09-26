@@ -1,5 +1,5 @@
-/* Общие стили */
-body {
+/* Основные стили */
+body, html {
     margin: 0;
     padding: 0;
     font-family: 'Roboto', sans-serif;
@@ -9,6 +9,8 @@ body {
     flex-direction: column;
     align-items: center;
     height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 /* Загрузочный экран */
@@ -16,22 +18,22 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
+    width: 100%;
     height: 100vh;
     background-color: #0a0f29;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10;
-}
-
-.loading-content {
-    text-align: center;
+    z-index: 100;
 }
 
 .loading-logo {
     width: 100px;
-    height: auto;
+}
+
+.loading-content {
+    text-align: center;
+    color: white;
 }
 
 /* Верхняя панель */
@@ -41,41 +43,30 @@ body {
     justify-content: space-between;
     padding: 10px 20px;
     align-items: center;
-}
-
-.account-info {
-    display: flex;
-    align-items: center;
-}
-
-.account-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
+    background-color: #1a1f36;
 }
 
 .username {
-    font-size: 18px;
+    font-size: 14px; /* Уменьшен размер шрифта имени пользователя */
 }
 
 .logo-section .logo {
     width: 100px;
     height: auto;
+    margin: 0 auto; /* Логотип по центру */
 }
 
 .token-info-btn {
     background-color: #1f2331;
     color: white;
-    border: none;
     padding: 10px 20px;
-    border-radius: 20px;
-    cursor: pointer;
+    border-radius: 10px;
+    border: none;
 }
 
 /* Баланс и доход */
 .balance-section {
-    margin-top: 20px;
+    margin: 20px;
     text-align: center;
 }
 
@@ -88,8 +79,8 @@ body {
 }
 
 .income-info {
+    margin-top: 10px;
     font-size: 16px;
-    color: #a0a0a0;
 }
 
 .icon {
@@ -98,15 +89,12 @@ body {
     margin-right: 10px;
 }
 
-.icon-large {
-    width: 40px;
-    height: 40px;
-}
-
-/* Анимация персонажа и мяча */
+/* Персонаж и мяч */
 .main-character {
     position: relative;
     margin-top: 20px;
+    display: flex;
+    justify-content: center;
 }
 
 .character {
@@ -116,13 +104,13 @@ body {
 
 .ball {
     position: absolute;
-    bottom: 10px;
-    left: 50%;
+    top: 40px; /* Опущен, чтобы не улетал */
+    left: 80px; /* Позиционируем мяч ближе к руке */
     width: 40px;
-    transform: translateX(-50%);
+    cursor: pointer;
 }
 
-/* Энергия и задания */
+/* Шкала энергии и кнопка заданий */
 .energy-section {
     margin-top: 20px;
     text-align: center;
@@ -131,11 +119,11 @@ body {
 .task-btn {
     background-color: #1a75ff;
     color: white;
-    border: none;
     padding: 10px 20px;
+    border: none;
     border-radius: 20px;
-    margin-top: 10px;
     cursor: pointer;
+    margin-top: 10px;
 }
 
 /* Всплывающее окно с прибылью */
@@ -145,12 +133,12 @@ body {
     left: 50%;
     transform: translateX(-50%);
     background-color: #1a1f36;
-    border-radius: 20px;
+    border-radius: 10px;
     padding: 20px;
     text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     display: none;
-    z-index: 100;
+    z-index: 200;
 }
 
 .collect-btn {
@@ -159,112 +147,46 @@ body {
     padding: 10px 20px;
     border: none;
     border-radius: 20px;
-    margin-top: 10px;
     cursor: pointer;
 }
 
 /* Нижнее меню */
 .bottom-menu {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%;
     display: flex;
     justify-content: space-around;
     background-color: #1a1f36;
-    padding: 10px;
+    padding: 10px 0;
+    z-index: 100;
 }
 
 .menu-btn {
-    background-color: transparent;
+    background: none;
     border: none;
     color: white;
     font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     cursor: pointer;
-}
-
-/* Оптимизация для мобильных устройств */
-@media only screen and (max-width: 768px) {
-    .character {
-        width: 120px;
-    }
-
-    .ball {
-        width: 30px;
-    }
-
-    .loading-logo {
-        width: 80px;
-    }
-
-    .popup-header h2 {
-        font-size: 18px;
-    }
-
-    .icon-large {
-        width: 30px;
-    }
-}
-/* Добавляем новые стили для заработка */
-.earnings-container {
-    flex-grow: 1;
-    overflow-y: scroll;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 10px;
     padding: 10px;
 }
 
-.card {
-    background-color: #1a1f36;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.menu-icon {
+    width: 25px;
+    margin-bottom: 5px;
 }
 
-.card .info {
-    display: flex;
-    flex-direction: column;
-}
-
-.card h3 {
-    margin: 0;
-    font-size: 18px;
-}
-
-.card .level {
-    font-size: 14px;
-    color: #a0a0a0;
-}
-
-.card .income {
-    margin-top: 5px;
-    font-size: 16px;
-    color: #ffd700;
-}
-
-.card button {
+.menu-btn.active {
     background-color: #1a75ff;
     color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
+    border-radius: 20px;
 }
 
-/* Мобильная оптимизация */
-@media only screen and (max-width: 768px) {
-    .card h3 {
-        font-size: 16px;
-    }
-
-    .card .income {
-        font-size: 14px;
-    }
-
-    .card button {
-        padding: 8px 16px;
-    }
-}
 /* Вкладка заработка */
 .earnings-tab {
     width: 100%;
@@ -273,9 +195,34 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 60px; /* Чтобы меню не закрывало контент */
 }
 
-/* Общие стили для секции заработка */
+.sub-tab-section {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    background-color: #1f2331;
+    padding: 10px;
+}
+
+.sub-tab-btn {
+    background-color: #1a1f36;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.sub-tab-btn.active {
+    background-color: #1a75ff;
+    color: white;
+}
+
+/* Карточки зданий */
 .earnings-container {
     flex-grow: 1;
     overflow-y: scroll;
@@ -283,13 +230,19 @@ body {
 }
 
 .card {
-    background-color: #1a1f36;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: #1f2331;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+}
+
+.card img {
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
 }
 
 .card .info {
@@ -300,39 +253,134 @@ body {
 .card h3 {
     margin: 0;
     font-size: 18px;
+    color: white;
 }
 
-.card .level {
+.card p {
+    margin: 5px 0 0;
     font-size: 14px;
     color: #a0a0a0;
 }
 
-.card .income {
-    margin-top: 5px;
-    font-size: 16px;
-    color: #ffd700;
+.upgrade-button {
+    background-color: #1a75ff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
 }
 
-.card button {
+/* Вкладка друзей */
+.friends-tab {
+    width: 100%;
+    height: 100vh;
+    background-color: #0a0f29;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 60px;
+}
+
+.friends-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    color: white;
+}
+
+.invite-btn {
+    background-color: #1a75ff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+.friends-container {
+    padding: 20px;
+    color: #fff;
+}
+
+.invite-section {
+    background-color: #1a1f36;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.bonus-icon {
+    width: 30px;
+    vertical-align: middle;
+}
+
+.invite-btn {
     background-color: #1a75ff;
     color: white;
     padding: 10px 20px;
     border: none;
     border-radius: 10px;
     cursor: pointer;
+    margin-top: 10px;
 }
 
-/* Мобильная оптимизация */
-@media only screen and (max-width: 768px) {
-    .card h3 {
-        font-size: 16px;
-    }
+.referral-link {
+    margin-top: 10px;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    background-color: #1a1f36;
+    color: white;
+    text-align: center;
+}
 
-    .card .income {
-        font-size: 14px;
-    }
+.copy-link-btn {
+    background-color: #ff9f1a;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+}
 
-    .card button {
-        padding: 8px 16px;
-    }
+.friends-list {
+    margin-top: 20px;
+}
+
+.collect-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+#referralsContainer {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.friend-item {
+    background-color: #1a1f36;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.friend-item p {
+    margin: 0;
+}
+
+.friend-item .profit {
+    color: #ffd700;
 }

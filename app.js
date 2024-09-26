@@ -1,6 +1,7 @@
 // Переменные
 let balance = parseInt(localStorage.getItem('balance')) || 10000;  // Начальный баланс с сохранением прогресса
 let energy = parseInt(localStorage.getItem('energy')) || 1000;     // Энергия с сохранением прогресса
+let maxEnergy = 1000;
 let lastEnergyRestore = localStorage.getItem('lastEnergyRestore') ? new Date(localStorage.getItem('lastEnergyRestore')) : new Date();  // Время последнего восстановления энергии
 
 let buildings = JSON.parse(localStorage.getItem('buildings')) || [
@@ -15,131 +16,74 @@ let accumulatedIncome = 0;  // Накопленный доход для расч
 window.onload = function () {
     setTimeout(function () {
         document.getElementById('loading-screen').style.display = 'none';
+        document.getElementById('bottom-menu').style.display = 'flex'; // Показать меню после загрузки
         calculateOfflineEarnings();
         restoreEnergy();  // Восстановление энергии при загрузке
+        generateBuildingCards(); // Генерация карточек при загрузке
+        startIncomeCalculation(); // Начало расчета дохода
+        updateUI();  // Обновление UI
     }, 2000);
 }
 
-// Расчет дохода в оффлайне
-function calculateOfflineEarnings() {
-    const currentVisit = new Date();
-    const offlineTime = (currentVisit - lastVisit) / (1000 * 60 * 60); // Время в часах
-    const totalIncomePerHour = buildings.reduce((sum, building) => sum + building.income, 0);
-    const offlineEarnings = Math.floor(totalIncomePerHour * offlineTime);  // Доход за время оффлайна
-
-    if (offlineEarnings > 0 && totalIncomePerHour > 0) {
-        document.getElementById('profitAmount').innerText = `${offlineEarnings}`;
-        document.getElementById('profitValue').innerText = `${offlineEarnings}`;
-        document.getElementById('profit-popup').style.display = 'block';
-    }
-
-    localStorage.setItem('lastVisit', currentVisit);
-}
-
-// Обработчик получения прибыли в оффлайне
-function collectProfit() {
-    const profitAmount = parseInt(document.getElementById('profitAmount').innerText);
-    balance += profitAmount;
-    localStorage.setItem('balance', balance);
-    updateUI();
-    document.getElementById('profit-popup').style.display = 'none';
-}
-
-// Обновление данных на странице
-function updateUI() {
-    document.getElementById('tokenBalance').innerText = Math.floor(balance);
-    document.getElementById('balance').innerText = Math.floor(balance);
-    document.getElementById('energyStatus').innerText = `${energy} / 1000 энергии`;
-
-    const totalIncomePerHour = buildings.reduce((sum, building) => sum + building.income, 0);
-    document.getElementById('hourlyIncome').innerText = `${totalIncomePerHour} доход / час`;
-}
-
-// Восстановление энергии
-function restoreEnergy() {
-    const now = new Date();
-    const timePassed = (now - lastEnergyRestore) / (1000 * 60);  // Время в минутах
-    const energyRestored = Math.floor(timePassed / 0.06);  // Восстанавливается 1000 энергии за 60 минут
-
-    energy = Math.min(energy + energyRestored, 1000);
-    lastEnergyRestore = new Date();
-
-    localStorage.setItem('energy', energy);
-    localStorage.setItem('lastEnergyRestore', lastEnergyRestore);
-    updateUI();
-}
-
-// Обновление баланса и дохода каждую секунду
-setInterval(function () {
-    const totalIncomePerSecond = buildings.reduce((sum, building) => sum + (building.income / 3600), 0);
-    accumulatedIncome += totalIncomePerSecond;
-
-    if (accumulatedIncome >= 1) {
-        balance += Math.floor(accumulatedIncome);  // Добавляем только целое число к балансу
-        accumulatedIncome = accumulatedIncome % 1;  // Оставляем остаток для следующего шага
-        localStorage.setItem('balance', Math.floor(balance));  // Обновляем баланс
-        updateUI();
-    }
-
-    restoreEnergy();  // Восстанавливаем энергию каждую минуту
-}, 1000);
-
-// Анимация чеканки мяча
-document.getElementById('character').addEventListener('click', function () {
-    if (energy > 0) {
-        energy -= 1;
-        const character = document.getElementById('character');
-        const ball = document.getElementById('ball');
-
-        // Добавляем доход от тапа
-        balance += 1;
-        updateUI();
-
-        // Анимация падающего мяча
-        ball.classList.add('fall');
-        setTimeout(() => {
-            ball.classList.remove('fall');
-            ball.classList.add('bounce');  // Отбивание мяча
-        }, 500);
-
-        setTimeout(() => {
-            ball.classList.remove('bounce');  // Возвращение мяча на место
-        }, 1000);
-
-        localStorage.setItem('energy', energy);
-        localStorage.setItem('balance', balance);
-        updateUI();
-    } else {
-        alert("Энергия закончилась! Подождите, пока она восстановится.");
-    }
+// Обновление нижнего меню при смене вкладки
+document.getElementById('earningsMenu').addEventListener('click', function () {
+    hideAllTabs();
+    showEarningsTab();
+    activateMenuTab('earningsMenu');
+});
+document.getElementById('homeMenu').addEventListener('click', function () {
+    hideAllTabs();
+    showMainElements();
+    activateMenuTab('homeMenu');
+});
+document.getElementById('friendsMenu').addEventListener('click', function () {
+    hideAllTabs();
+    showFriendsTab();
+    activateMenuTab('friendsMenu');
 });
 
-// Функция для показа вкладки заработка
-function showEarningsTab() {
-    document.getElementById('earningsTab').style.display = 'block';
+// Активируем вкладку в меню
+function activateMenuTab(activeId) {
+    const menuButtons = document.querySelectorAll('.menu-btn');
+    menuButtons.forEach(button => button.classList.remove('active'));
+    document.getElementById(activeId).classList.add('active');
+}
+
+// Универсальные функции для скрытия всех элементов
+function hideAllTabs() {
+    document.getElementById('earningsTab').style.display = 'none';
+    document.getElementById('friendsTab').style.display = 'none';
+    hideMainElements();
+}
+
+// Скрываем элементы главной страницы
+function hideMainElements() {
     document.querySelector('.top-bar').style.display = 'none';
     document.querySelector('.balance-section').style.display = 'none';
     document.querySelector('.main-character').style.display = 'none';
     document.querySelector('.energy-section').style.display = 'none';
-    document.querySelector('.bottom-menu').style.display = 'none';
-
-    generateBuildingCards();
 }
 
-// Функция для возвращения на главный экран
-function goBackToMain() {
-    document.getElementById('earningsTab').style.display = 'none';
+// Показываем элементы главной страницы
+function showMainElements() {
     document.querySelector('.top-bar').style.display = 'flex';
     document.querySelector('.balance-section').style.display = 'block';
     document.querySelector('.main-character').style.display = 'block';
     document.querySelector('.energy-section').style.display = 'block';
-    document.querySelector('.bottom-menu').style.display = 'flex';
+    updateUI();  // Обновляем данные на главной странице
 }
 
-// Обработчик для кнопки "Заработок"
-document.getElementById('openEarnings').addEventListener('click', function () {
-    showEarningsTab();
-});
+// Функция для показа вкладки заработка
+function showEarningsTab() {
+    document.getElementById('earningsTab').style.display = 'block'; // Показываем вкладку заработка
+    generateBuildingCards();  // Генерация карточек при переходе во вкладку заработка
+    updateUI();  // Обновляем данные в интерфейсе
+}
+
+// Функция для показа вкладки друзей
+function showFriendsTab() {
+    document.getElementById('friendsTab').style.display = 'block'; // Показываем вкладку друзей
+}
 
 // Функция для генерации карточек зданий
 function generateBuildingCards() {
@@ -149,6 +93,9 @@ function generateBuildingCards() {
     buildings.forEach((building, index) => {
         const card = document.createElement('div');
         card.classList.add('card');
+
+        const image = document.createElement('img');
+        image.src = 'building-icon.png';  // Иконка здания
 
         const infoDiv = document.createElement('div');
         infoDiv.classList.add('info');
@@ -167,8 +114,10 @@ function generateBuildingCards() {
 
         const upgradeButton = document.createElement('button');
         upgradeButton.innerText = `Улучшить (${building.cost})`;
+        upgradeButton.classList.add('upgrade-button');
         upgradeButton.onclick = () => upgradeBuilding(index);
 
+        card.appendChild(image);
         card.appendChild(infoDiv);
         card.appendChild(upgradeButton);
         container.appendChild(card);
@@ -187,34 +136,69 @@ function upgradeBuilding(index) {
         localStorage.setItem('balance', balance);
         localStorage.setItem('buildings', JSON.stringify(buildings));
         updateUI();
-        generateBuildingCards();
+        generateBuildingCards();  // Перегенерируем карточки после улучшения
     } else {
         alert('Недостаточно средств или максимальный уровень достигнут!');
     }
 }
 
-// Добавляем стили для анимации
-const style = document.createElement('style');
-style.innerHTML = `
-@keyframes kick {
-    0% { transform: rotate(0); }
-    50% { transform: rotate(-10deg); }
-    100% { transform: rotate(0); }
+// Обновление данных на странице
+function updateUI() {
+    document.getElementById('tokenBalance').innerText = Math.floor(balance);
+    document.getElementById('balance').innerText = Math.floor(balance);
+    const totalIncomePerHour = buildings.reduce((sum, building) => sum + building.income, 0);
+    document.getElementById('hourlyIncome').innerText = `${totalIncomePerHour} доход / час`;
+    document.getElementById('hourlyIncomeEarnings').innerText = `${totalIncomePerHour} доход / час`; // Обновление во вкладке заработка
+
+    // Обновляем энергию
+    document.getElementById('energyStatus').innerText = `${energy} / ${maxEnergy} энергии`;
 }
 
+// Анимация чеканки мяча
+function handleTap() {
+    if (energy > 0) {
+        energy -= 1;
+        const ball = document.getElementById('ball');
+
+        // Добавляем доход от тапа
+        balance += 1;
+        updateUI();
+
+        // Анимация мяча: падение с руки на ногу, отскок обратно
+        ball.classList.add('fall');
+        setTimeout(() => {
+            ball.classList.remove('fall');
+            ball.classList.add('bounce');  // Отбивание мяча
+        }, 500);
+
+        setTimeout(() => {
+            ball.classList.remove('bounce');  // Возвращение мяча на место
+        }, 1000);
+
+        localStorage.setItem('energy', energy);
+        localStorage.setItem('balance', balance);
+        updateUI();
+    } else {
+        alert("Энергия закончилась! Подождите, пока она восстановится.");
+    }
+}
+
+// Делать тап по мальчику или по мячу
+document.getElementById('character').addEventListener('click', handleTap);
+document.getElementById('ball').addEventListener('click', handleTap);
+
+// Анимации для мяча
+const style = document.createElement('style');
+style.innerHTML = `
 @keyframes fall {
-    0% { top: -40px; }
-    100% { top: 50px; }
+    0% { top: 40px; }
+    100% { top: 100px; }
 }
 
 @keyframes bounce {
-    0% { top: 50px; }
-    50% { top: -20px; }
-    100% { top: -40px; }
-}
-
-.character.kick {
-    animation: kick 0.5s ease-in-out;
+    0% { top: 100px; }
+    50% { top: 40px; }
+    100% { top: 40px; }
 }
 
 .ball.fall {
@@ -226,3 +210,69 @@ style.innerHTML = `
 }
 `;
 document.head.appendChild(style);
+
+// Рассчитываем и начисляем оффлайн доход
+function calculateOfflineEarnings() {
+    const currentTime = new Date();
+    const offlineTime = Math.floor((currentTime - lastEnergyRestore) / 1000 / 60); // Время оффлайн в минутах
+    const totalIncomePerHour = buildings.reduce((sum, building) => sum + building.income, 0);
+    const offlineIncome = (totalIncomePerHour / 60) * offlineTime;  // Рассчитываем доход за оффлайн
+
+    if (offlineIncome > 0) {
+        balance += Math.floor(offlineIncome);
+        localStorage.setItem('balance', balance);
+        lastEnergyRestore = new Date();
+        localStorage.setItem('lastEnergyRestore', lastEnergyRestore);
+        updateUI();
+    }
+}
+
+// Восстановление энергии
+function restoreEnergy() {
+    const currentTime = new Date();
+    const minutesPassed = Math.floor((currentTime - lastEnergyRestore) / 1000 / 60); // Время оффлайн в минутах
+    const energyToRestore = Math.min(maxEnergy, energy + minutesPassed);  // Максимум 1000 энергии
+
+    energy = energyToRestore;
+    localStorage.setItem('energy', energy);
+    lastEnergyRestore = new Date();
+    localStorage.setItem('lastEnergyRestore', lastEnergyRestore);
+    updateUI(); // Обновление UI с новой энергией
+}
+
+// Запуск восстановления энергии каждую минуту
+setInterval(() => {
+    restoreEnergy();
+}, 60000); // Восстановление энергии каждые 60 секунд
+
+// Начисление дохода за карточки каждую секунду
+function startIncomeCalculation() {
+    setInterval(() => {
+        const totalIncomePerSecond = buildings.reduce((sum, building) => sum + (building.income / 3600), 0);
+        accumulatedIncome += totalIncomePerSecond;
+
+        if (accumulatedIncome >= 1) {
+            balance += Math.floor(accumulatedIncome);
+            accumulatedIncome -= Math.floor(accumulatedIncome);
+            localStorage.setItem('balance', balance);
+            updateUI();
+        }
+    }, 1000); // Каждую секунду проверяем начисления
+}
+// Предположим, что у каждого пользователя есть свой уникальный идентификатор
+const userId = 'USER_ID'; // Здесь должно быть ID текущего пользователя, замените это на реальный ID
+
+// Функция для генерации реферальной ссылки
+function generateReferralLink() {
+    const referralLink = `https://t.me/condicii_bot?start=ref${userId}`;
+    document.getElementById('referralLink').value = referralLink;
+}
+
+// Функция для копирования ссылки
+function copyReferralLink() {
+    const referralLink = document.getElementById('referralLink');
+    referralLink.select();
+    referralLink.setSelectionRange(0, 99999); // Для мобильных устройств
+    document.execCommand('copy');
+    alert("Ссылка скопирована!");
+}

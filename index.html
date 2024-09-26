@@ -37,18 +37,17 @@
             <div class="income-info">
                 <span id="hourlyIncome">0 доход / час</span>
                 <span id="tapIncome">1 доход / тап</span>
-                <span id="energy">1000 энергии</span>
             </div>
         </div>
     </div>
 
-    <!-- Анимация человечка и мяча -->
+    <!-- Персонаж -->
     <div class="main-character">
-        <img id="character" src="character.png" alt="Человечек" class="character">
-        <img id="ball" src="ball.png" alt="Мяч" class="ball" style="position: absolute; left: 65%; top: -40px;">
+        <img id="character" src="character.png" alt="Персонаж" class="character">
+        <img id="ball" src="ball.png" alt="Мяч" class="ball">
     </div>
 
-    <!-- Энергия и задания -->
+    <!-- Шкала энергии и кнопка задания -->
     <div class="energy-section">
         <span id="energyStatus">1000 / 1000 энергии</span>
         <button class="task-btn">Задания</button>
@@ -69,22 +68,46 @@
     </div>
 
     <!-- Нижнее меню -->
-    <div class="bottom-menu">
-        <button class="menu-btn">Главная</button>
-        <button class="menu-btn" id="openEarnings">Заработок</button>
-        <button class="menu-btn">Друзья</button>
-        <button class="menu-btn">Колесо кондиций</button>
+    <div id="bottom-menu" class="bottom-menu">
+        <button class="menu-btn active" id="homeMenu" onclick="showMain()">
+            <img src="home-icon.png" alt="Главная" class="menu-icon">
+            Главная
+        </button>
+        <button class="menu-btn" id="earningsMenu" onclick="showEarnings()">
+            <img src="earnings-icon.png" alt="Заработок" class="menu-icon">
+            Заработок
+        </button>
+        <button class="menu-btn" id="friendsMenu" onclick="showFriends()">
+            <img src="friends-icon.png" alt="Друзья" class="menu-icon">
+            Друзья
+        </button>
+        <button class="menu-btn">
+            <img src="games-icon.png" alt="Игры" class="menu-icon">
+            Игры
+        </button>
     </div>
 
     <!-- Вкладка заработка -->
     <div id="earningsTab" class="earnings-tab" style="display: none;">
-        <div class="top-bar">
+        <div class="top-bar earnings-header">
             <button class="back-btn" onclick="goBackToMain()">Назад</button>
-            <h1>Заработок</h1>
-            <div class="balance-section">
-                <span>Баланс:</span>
-                <span id="balance">10000</span> <!-- Отображение баланса -->
+            <div class="earnings-info">
+                <div class="token-balance">
+                    <img src="coin-icon.png" alt="Токены" class="icon">
+                    <span id="balance">10000</span>
+                </div>
+                <div class="income-info">
+                    <img src="income-icon.png" alt="Доход" class="icon">
+                    <span id="hourlyIncomeEarnings">0 доход / час</span>
+                </div>
             </div>
+        </div>
+
+        <!-- Вкладки Майнинг, Ежедневные и Бустеры -->
+        <div class="sub-tab-section">
+            <button class="sub-tab-btn active">Майнинг</button>
+            <button class="sub-tab-btn">Ежедневные</button>
+            <button class="sub-tab-btn">Бустеры</button>
         </div>
 
         <!-- Карточки зданий -->
@@ -93,6 +116,76 @@
         </div>
     </div>
 
+
+    <div id="friendsTab" class="friends-tab" style="display: none;">
+        <div class="top-bar friends-header">
+            <button class="back-btn" onclick="goBackToMain()">Назад</button>
+            <h1>Друзья</h1>
+        </div>
+    
+        <div class="friends-container">
+            <div class="invite-section">
+                <h2>Получай 20% от дохода друзей</h2>
+                <p><img src="bonus-icon.png" alt="Бонус" class="bonus-icon"> +50,000 для тебя и твоего друга</p>
+                <button class="invite-btn" onclick="generateReferralLink()">Пригласить друга</button>
+                <input type="text" id="referralLink" class="referral-link" readonly value="" />
+                <button class="copy-link-btn" onclick="copyReferralLink()">Копировать ссылку</button>
+            </div>
+    
+            <div class="friends-list">
+                <h3>Друзья</h3>
+                <p>Приглашено рефералов: <span id="referralCount">0</span></p>
+                <p>Можешь собрать: <span id="referralBonus">0.00</span> <img src="coin-icon.png" alt="Токены"></p>
+                <button class="collect-btn" onclick="collectReferralBonus()">Получить</button>
+                <div id="referralsContainer">
+                    <!-- Здесь будут отображаться друзья -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+
     <script src="app.js"></script>
+
+    <script>
+        // Переключение вкладок
+        function showMain() {
+            document.getElementById('earningsTab').style.display = 'none';
+            document.getElementById('friendsTab').style.display = 'none';
+            document.getElementById('loading-screen').style.display = 'none';
+            document.getElementById('bottom-menu').style.display = 'flex';
+        }
+
+        function showEarnings() {
+            document.getElementById('earningsTab').style.display = 'block';
+            document.getElementById('friendsTab').style.display = 'none';
+            document.getElementById('bottom-menu').style.display = 'flex';
+        }
+
+        function showFriends() {
+            document.getElementById('friendsTab').style.display = 'block';
+            document.getElementById('earningsTab').style.display = 'none';
+            document.getElementById('bottom-menu').style.display = 'flex';
+        }
+
+        function goBackToMain() {
+            document.getElementById('friendsTab').style.display = 'none';
+            document.getElementById('earningsTab').style.display = 'none';
+            document.getElementById('loading-screen').style.display = 'none';
+            document.getElementById('bottom-menu').style.display = 'flex';
+        }
+
+        // Функция для копирования реферальной ссылки
+        function copyReferralLink(userId) {
+            const referralLink = `https://t.me/condicii_bot?start=ref${userId}`;
+            navigator.clipboard.writeText(referralLink).then(() => {
+                document.getElementById('copiedMessage').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('copiedMessage').style.display = 'none';
+                }, 2000);
+            });
+        }
+    </script>
 </body>
 </html>

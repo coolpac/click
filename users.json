@@ -1,0 +1,13 @@
+{
+  "831469958": {
+    "invitedBy": "USER_ID",
+    "tokens": 50000,
+    "isReferralRewarded": true
+  },
+  "USER_ID": {
+    "tokens": 50000,
+    "referrals": [
+      831469958
+    ]
+  }
+}
